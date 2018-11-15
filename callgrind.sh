@@ -2,11 +2,10 @@
 # recompilar si hace falta
 make
 
-
 # inicializar variables
 P=9
-Ninicio=$((10000 + 1024 * P))
-Nfinal=$((10000+1024*(P+1)))
+Ninicio=$((2000 + 1024 * P))
+Nfinal=$((2000+1024*(P+1)))
 Npaso=64
 Nrepeticiones=2
 fDAT=slow_fast_time.dat
@@ -28,30 +27,19 @@ for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
 	fast[N]=0
 done
 
-for ((I = 1 ; I <= Nrepeticiones ; I += 1)); do
-	for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
-		echo "Slow$I : $N / $Nfinal..."
-		
-		# ejecutar los programas slow y fast consecutivamente con tamaño de matriz N
-		# para cada uno, filtrar la línea que contiene el tiempo y seleccionar la
-		# tercera columna (el valor del tiempo). Dejar los valores en variables
-		# para poder imprimirlos en la misma línea del fichero de datos
-		slowTime=$(./slow $N | grep 'time' | awk '{print $3}')
-		echo "${slow[N]}+$slowTime"
-		slow[N]=$(echo "${slow[N]}+$slowTime"|bc -l)
-	done
+tam_caches=(1024 2048 4096 8192)
 
+
+for tam in "${tam_caches[@]}"; do
+	echo "tamanio = $tam "
 	for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
-		echo "Fast$I : $N / $Nfinal..."
-		
-		# ejecutar los programas slow y fast consecutivamente con tamaño de matriz N
-		# para cada uno, filtrar la línea que contiene el tiempo y seleccionar la
-		# tercera columna (el valor del tiempo). Dejar los valores en variables
-		# para poder imprimirlos en la misma línea del fichero de datos
-		fastTime=$(./fast $N | grep 'time' | awk '{print $3}')
-		fast[N]=$(echo "${fast[N]}+$fastTime"|bc -l)	
+		echo "Iteration $I : $N / $Nfinal..."
+
+		valgrind --tool=callgrind --I1=$tam,1,64 --D1=$tam,1,64 --LL=8388608,1,64 --callgrind-out-file=cache_slow_$tam.dat ./slow N 
+		valgrind --tool=callgrind --I1=$tam,1,64 --D1=$tam,1,64 --LL=8388608,1,64 --callgrind-out-file=cache_fast_$tam.dat ./fast N 
 	done
 done
+
 
 for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
 	slow[N]=$(echo "${slow[N]}/$Nrepeticiones"|bc -l)
@@ -59,8 +47,6 @@ for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
 	echo "$N	${slow[N]}	${fast[N]}" >> $fDAT
 
 done
-
-
 
 
 echo "Generating plot..."
