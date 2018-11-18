@@ -73,6 +73,8 @@ set xlabel "Matrix Size"
 set key right bottom
 set grid
 set term png
+set key outside;
+set key right top;
 set output "$fPNG"
 plot "$fDAT" using 1:2 with lines lw 2 title "slow", \
      "$fDAT" using 1:3 with lines lw 2 title "fast"
