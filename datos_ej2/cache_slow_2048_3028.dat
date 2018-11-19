@@ -2510,6 +2510,7 @@ fn=__printf_fp_l
 fl=/build/glibc-OTsEL5/glibc-2.27/stdio-common/../include/rounding-mode.h
 fn=__printf_fp_l
 52 8 0 0 0 0 0 0 0 0
+58 2 0 0 0 0 0 0 0 0
 fl=/build/glibc-OTsEL5/glibc-2.27/stdio-common/../libio/libioP.h
 fn=vfprintf
 870 15 3 2 0 0 0 3 3 0
@@ -2521,7 +2522,7 @@ fn=__printf_fp_l
 95 14 4 2 2 0 0 0 0 0
 fl=/build/glibc-OTsEL5/glibc-2.27/stdio-common/../sysdeps/pthread/allocalim.h
 fn=__printf_fp_l
-27 4 0 0 0 0 0 2 1 0
+27 4 0 0 0 0 0 2 2 0
 29 4 2 1 0 0 0 0 0 0
 fl=/build/glibc-OTsEL5/glibc-2.27/stdio-common/_itoa.c
 fn=_itoa_word
@@ -2534,7 +2535,7 @@ fn=vfprintf
 108 27 0 0 0 0 0 12 2 1
 fl=/build/glibc-OTsEL5/glibc-2.27/stdio-common/printf.c
 fn=printf
-28 49 6 4 3 2 1 34 5 3
+28 49 6 4 3 2 1 34 4 3
 32 18 2 2 0 0 0 12 2 1
 33 15 0 0 6 6 2 3 0 0
 37 15 3 0 9 5 0 0 0 0
@@ -2981,7 +2982,7 @@ fn=exit
 139 4 1 1 0 0 0 1 0 0
 fl=/build/glibc-OTsEL5/glibc-2.27/stdlib/mul.c
 fn=__mpn_mul
-48 32 2 2 2 2 0 18 1 1
+48 32 2 2 2 2 0 18 1 0
 54 4 0 0 0 0 0 0 0 0
 66 4 0 0 0 0 0 0 0 0
 71 2 0 0 2 1 1 0 0 0
@@ -3427,7 +3428,7 @@ fn=__memcpy_avx_unaligned_erms
 277 4 0 0 4 0 0 0 0 0
 291 5 1 1 5 1 1 0 0 0
 292 5 0 0 5 0 0 0 0 0
-293 5 0 0 0 0 0 5 3 2
+293 5 0 0 0 0 0 5 3 3
 294 5 0 0 0 0 0 5 0 0
 295 5 0 0 5 0 0 0 0 0
 306 2 1 0 2 0 0 0 0 0
@@ -4227,4 +4228,4 @@ fn=__libc_csu_init
 0 34 3 3 8 2 0 8 0 0
 fn=_start
 0 11 1 1 2 1 0 3 0 0
-summary: 834066733 55017736 1380 330172681 53322315 1196772 91709886 3714676 1147739
+summary: 834066735 55017736 1380 330172681 53322315 1196772 91709886 3714676 1147739

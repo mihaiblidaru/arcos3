@@ -4,9 +4,14 @@ make
 
 # inicializar variables
 P=9
-Ninicio=$((500 + 256 * P))
-Nfinal=$((500 + 256*(P+1)))
-Npaso=16
+
+Ninicio=$((2000 + 1024 * P))
+Nfinal=$((2000 + 1024 *(P+1)))
+Npaso=64
+
+#Ninicio=$((500 + 256 * P))
+#Nfinal=$((500 + 256*(P+1)))
+#Npaso=16
 Nrepeticiones=2
 fDAT=slow_fast_time.dat
 fPNG=slow_fast_time.png
@@ -62,15 +67,20 @@ fi
 
 if [ $runcachegring == True ]; then
 	echo "Ejecutando pruebas ejercicio 2"
-	for tam in "${tam_caches[@]}"; do
-		echo "tamanio = $tam "
-		for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
-			echo "Iteration : $N / $Nfinal..."
-			echo "    Slow $tam - $N"
-			valgrind --tool=cachegrind --I1=$tam,1,64 --D1=$tam,1,64 --LL=8388608,1,64 --cachegrind-out-file=datos_ej2/cache_slow_$tam\_$N.dat ./slow $N > /dev/null 2>&1
-			echo "    Fast $tam - $N"
-			valgrind --tool=cachegrind --I1=$tam,1,64 --D1=$tam,1,64 --LL=8388608,1,64 --cachegrind-out-file=datos_ej2/cache_fast_$tam\_$N.dat ./fast $N > /dev/null 2>&1
+
+	for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
+		echo "Iteration : $N / $Nfinal..."
+		echo "Slow - Todos los tamaños"
+		for tam in "${tam_caches[@]}"; do
+			valgrind --tool=cachegrind --I1=$tam,1,64 --D1=$tam,1,64 --LL=8388608,1,64 --cachegrind-out-file=datos_ej2/cache_slow_$tam\_$N.dat ./slow $N > /dev/null 2>&1 &
 		done
+		
+		wait
+		echo "Fast - Todos los tamaños"
+		for tam in "${tam_caches[@]}"; do
+			valgrind --tool=cachegrind --I1=$tam,1,64 --D1=$tam,1,64 --LL=8388608,1,64 --cachegrind-out-file=datos_ej2/cache_fast_$tam\_$N.dat ./fast $N > /dev/null 2>&1 &
+		done
+		wait
 	done
 fi
 

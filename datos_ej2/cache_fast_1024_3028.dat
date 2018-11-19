@@ -2510,6 +2510,7 @@ fn=__printf_fp_l
 fl=/build/glibc-OTsEL5/glibc-2.27/stdio-common/../include/rounding-mode.h
 fn=__printf_fp_l
 52 6 0 0 0 0 0 0 0 0
+58 2 0 0 0 0 0 0 0 0
 fl=/build/glibc-OTsEL5/glibc-2.27/stdio-common/../libio/libioP.h
 fn=vfprintf
 870 15 3 2 0 0 0 3 3 0
@@ -4251,4 +4252,4 @@ fn=__libc_csu_init
 0 34 3 3 8 2 0 8 0 0
 fn=_start
 0 11 1 1 2 1 0 3 0 0
-summary: 834066906 64188376 1528 330172704 77747651 1149520 91709898 5407715 1147865
+summary: 834066908 64188376 1528 330172704 77747651 1149520 91709898 5407715 1147865
