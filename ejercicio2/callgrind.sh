@@ -5,13 +5,13 @@ make
 # inicializar variables
 P=9
 
-Ninicio=$((2000 + 1024 * P))
-Nfinal=$((2000 + 1024 *(P+1)))
-Npaso=64
+#Ninicio=$((2000 + 1024 * P))
+#Nfinal=$((2000 + 1024 *(P+1)))
+#Npaso=64
 
-#Ninicio=$((500 + 256 * P))
-#Nfinal=$((500 + 256*(P+1)))
-#Npaso=16
+Ninicio=$((500 + 256 * P))
+Nfinal=$((500 + 256*(P+1)))
+Npaso=16
 Nrepeticiones=2
 fDAT=slow_fast_time.dat
 fPNG=slow_fast_time.png
