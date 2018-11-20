@@ -28,7 +28,7 @@ if [ $runslowfast == False ]; then
 	while true; do
 		read -p "Ejecutar de nuevo?[S/N]:" yn
 		case $yn in
-			[YySs]* ) runslowfast=True; rm $fDAT; break;;
+			[YySs]* ) runslowfast=True; break;;
 			[Nn]* ) break;;
 			* ) echo "Responde con S o N";;
 		esac
