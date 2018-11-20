@@ -21,7 +21,7 @@ rm -f $fDAT fPNG
 touch $fDAT
 
 echo "Running slow and fast..."
-# bucle para N desde P hasta Q 
+# bucle para N desde P hasta Q
 #for N in $(seq $Ninicio $Npaso $Nfinal);
 for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
 	slow[N]=0
@@ -31,7 +31,7 @@ done
 for ((I = 1 ; I <= Nrepeticiones ; I += 1)); do
 	for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
 		echo "Slow$I : $N / $Nfinal..."
-		
+
 		# ejecutar los programas slow y fast consecutivamente con tamaño de matriz N
 		# para cada uno, filtrar la línea que contiene el tiempo y seleccionar la
 		# tercera columna (el valor del tiempo). Dejar los valores en variables
@@ -43,13 +43,13 @@ for ((I = 1 ; I <= Nrepeticiones ; I += 1)); do
 
 	for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
 		echo "Fast$I : $N / $Nfinal..."
-		
+
 		# ejecutar los programas slow y fast consecutivamente con tamaño de matriz N
 		# para cada uno, filtrar la línea que contiene el tiempo y seleccionar la
 		# tercera columna (el valor del tiempo). Dejar los valores en variables
 		# para poder imprimirlos en la misma línea del fichero de datos
 		fastTime=$(./fast $N | grep 'time' | awk '{print $3}')
-		fast[N]=$(echo "${fast[N]}+$fastTime"|bc -l)	
+		fast[N]=$(echo "${fast[N]}+$fastTime"|bc -l)
 	done
 done
 
