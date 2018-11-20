@@ -2,82 +2,93 @@
 # recompilar si hace falta
 make
 
-
 # inicializar variables
 P=9
 Ninicio=$((10000 + 1024 * P))
-Nfinal=$((10000+1024*(P+1)))
+Nfinal=$((10000 + 1024 * (P+1)))
 Npaso=64
-Nrepeticiones=2
-fDAT=slow_fast_time.dat
-fPNG=slow_fast_time.png
+N2=200
+Nrepeticiones=10
+dirDatos=datos_ej1
+fDAT=$dirDatos/slow_fast_time.dat
+fPNG=$dirDatos/slow_fast_time.png
+runslowfast=False
+
+mkdir -p $dirDatos
 
 
 
-# borrar el fichero DAT y el fichero PNG
-rm -f $fDAT fPNG
+if [ ! -f "$fDAT" ]; then
+	runslowfast=True
+	echo "Fichero $fDAT no existe"
+fi
 
-# generar el fichero DAT vacío
-touch $fDAT
+if [ $runslowfast == False ]; then
+	echo "Ya existe un fichero con datos"
+	while true; do
+		read -p "Ejecutar de nuevo?[S/N]:" yn
+		case $yn in
+			[YySs]* ) runslowfast=True; rm $fDAT; break;;
+			[Nn]* ) break;;
+			* ) echo "Responde con S o N";;
+		esac
+	done
+fi
 
-echo "Running slow and fast..."
-# bucle para N desde P hasta Q
-#for N in $(seq $Ninicio $Npaso $Nfinal);
-for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
-	slow[N]=0
-	fast[N]=0
-done
+#solo ejecutamos si no existe el fichero o sí el usuario lo quiere
+if [ $runslowfast == True ]; then
 
-for ((I = 1 ; I <= Nrepeticiones ; I += 1)); do
+	#inicializamos el array donde guardamos la suma de tiempos
 	for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
-		echo "Slow$I : $N / $Nfinal..."
-
-		# ejecutar los programas slow y fast consecutivamente con tamaño de matriz N
-		# para cada uno, filtrar la línea que contiene el tiempo y seleccionar la
-		# tercera columna (el valor del tiempo). Dejar los valores en variables
-		# para poder imprimirlos en la misma línea del fichero de datos
-		slowTime=$(./slow $N | grep 'time' | awk '{print $3}')
-		echo "${slow[N]}+$slowTime"
-		slow[N]=$(echo "${slow[N]}+$slowTime"|bc -l)
+		slow[N]=0
+		fast[N]=0
 	done
 
-	for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
-		echo "Fast$I : $N / $Nfinal..."
+	echo "Running slow and fast..."
+	for ((I = 1 ; I <= Nrepeticiones ; I += 1)); do
+		for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
+			echo -e "Rep $I: $N / $Nfinal"
+			slowTime=$(./slow $N | grep 'time' | awk '{print $3}')
+			slow[N]=$(echo "${slow[N]}+$slowTime"|bc -l)
+			./slow $N2 > /dev/null
+			
+			fastTime=$(./fast $N | grep 'time' | awk '{print $3}')
+			fast[N]=$(echo "${fast[N]}+$fastTime"|bc -l)
+			./fast $N2 > /dev/null
+		done
 
-		# ejecutar los programas slow y fast consecutivamente con tamaño de matriz N
-		# para cada uno, filtrar la línea que contiene el tiempo y seleccionar la
-		# tercera columna (el valor del tiempo). Dejar los valores en variables
-		# para poder imprimirlos en la misma línea del fichero de datos
-		fastTime=$(./fast $N | grep 'time' | awk '{print $3}')
-		fast[N]=$(echo "${fast[N]}+$fastTime"|bc -l)
+		# hacemos la media y guardamos los datos
+		# lo hacemos en bucle por si queremos parar antes de que acabe y guardar
+		# los datos obtenidos hasta ese momento
+		echo -e "N\tslow\tfast" > $fDAT
+		for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
+			media_s[N]=$(echo "${slow[N]}/$I"|bc -l)
+			media_n[N]=$(echo "${fast[N]}/$I"|bc -l)
+			echo -e "$N\t${media_s[N]}\t${media_n[N]}" >> $fDAT
+		done
 	done
-done
-
-for ((N = Ninicio ; N <= Nfinal ; N += Npaso)); do
-	slow[N]=$(echo "${slow[N]}/$Nrepeticiones"|bc -l)
-	fast[N]=$(echo "${fast[N]}/$Nrepeticiones"|bc -l)
-	echo "$N	${slow[N]}	${fast[N]}" >> $fDAT
-
-done
-
-
-
+fi
 
 echo "Generating plot..."
 # llamar a gnuplot para generar el gráfico y pasarle directamente por la entrada
 # estándar el script que está entre "<< END_GNUPLOT" y "END_GNUPLOT"
 gnuplot << END_GNUPLOT
-set title "Slow-Fast Execution Time"
-set ylabel "Execution time (s)"
-set xlabel "Matrix Size"
-set key right bottom
-set grid
-set term png
+set title "Slow-Fast Execution Time";
+set ylabel "Execution time (s)";
+set xlabel "Matrix Size";
+set grid;
+set term png;
+set key autotitle columnhead
 set key outside;
 set key right top;
-set output "$fPNG"
+set output "$fPNG";
+
 plot "$fDAT" using 1:2 with lines lw 2 title "slow", \
-     "$fDAT" using 1:3 with lines lw 2 title "fast"
-replot
-quit
+     "$fDAT" using 1:3 with lines lw 2 title "fast";
+replot;
+quit;
 END_GNUPLOT
+
+
+
+
