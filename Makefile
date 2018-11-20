@@ -1,6 +1,6 @@
 LIBS =
 LIB_DIR =
-FLAGS = -g -Wall -Wextra -Werror -D_GNU_SOURCE
+FLAGS = -g -Wall -Wextra -Werror -D_GNU_SOURCE #-DPRINT_MAT
 
 .PHONY: clean all
 

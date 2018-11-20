@@ -4,9 +4,9 @@ make
 
 
 # inicializar variables
-P=0
-Ninicio=$((0+0))
-Nfinal=$((0+80*(P+1)))
+P=9
+Ninicio=$((256+(265*P)))
+Nfinal=$((256+256*(P+1)))
 Npaso=10
 
 #Ninicio=$((256+256* P))
