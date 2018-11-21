@@ -17,7 +17,7 @@ Ninicio=$((256+256* P))
 Nfinal=$((256+256*(P+1)))
 Npaso=16
 
-Nrepeticiones=2
+Nrepeticiones=5
 dirDatos=datos_ej3
 
 fDAT=$dirDatos/mult.dat
