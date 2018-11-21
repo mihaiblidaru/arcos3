@@ -9,13 +9,13 @@ P=9
 #Nfinal=$((0+64*(P+1)))
 #Npaso=4
 
-#Ninicio=$((64+64* P))
-#Nfinal=$((64+64*(P+1)))
-#Npaso=4
+Ninicio=$((64+64* P))
+Nfinal=$((64+64*(P+1)))
+Npaso=4
 
-Ninicio=$((256+256* P))
-Nfinal=$((256+256*(P+1)))
-Npaso=16
+#Ninicio=$((256+256* P))
+#Nfinal=$((256+256*(P+1)))
+#Npaso=16
 
 Nrepeticiones=5
 dirDatos=datos_ej3
