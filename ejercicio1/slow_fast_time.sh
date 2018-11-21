@@ -10,8 +10,8 @@ Npaso=64
 N2=200
 Nrepeticiones=10
 dirDatos=datos_ej1
-fDAT=$dirDatos/slow_fast_time.dat
-fPNG=$dirDatos/slow_fast_time.png
+fDAT=$dirDatos/time_slow_fast.dat
+fPNG=$dirDatos/time_slow_fast.png
 runslowfast=False
 
 mkdir -p $dirDatos
